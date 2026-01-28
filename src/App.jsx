@@ -1,3 +1,3 @@
-import MentalHealthDashboardDemo from './MentalHealthDashboardDemo';
-export default function App(){ return <MentalHealthDashboardDemo />; }
+import Dashboard from './pages/Dashboard';
+export default function App() { return <Dashboard />; }
 
