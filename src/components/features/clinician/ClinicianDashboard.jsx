@@ -27,7 +27,8 @@ export default function ClinicianDashboard({
     downloadCSV,
     resetDataset,
     barData,
-    patientPreviewLine
+    patientPreviewLine,
+    randomizeAllPatients
 }) {
     const cardVariants = {
         hidden: { opacity: 0, y: 8 },
@@ -51,7 +52,7 @@ export default function ClinicianDashboard({
                 <div style={{ marginTop: 12 }}>
                     <div style={{ display: "flex", gap: 8 }}>
                         <input placeholder="Filter patients..." value={query} onChange={e => setQuery(e.target.value)} style={{ flex: 1, padding: 10, borderRadius: 10, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.03)", fontWeight: 700 }} />
-                        <button className="btn ghost" onClick={() => setPatients(prev => prev.map(pp => ({ ...pp, symptoms: Object.fromEntries(Object.keys(pp.symptoms).map(k => [k, Math.round(Math.random() * 5)])) })))}>Randomize all</button>
+                        <button className="btn ghost" onClick={randomizeAllPatients}>Randomize all</button>
                     </div>
                 </div>
 

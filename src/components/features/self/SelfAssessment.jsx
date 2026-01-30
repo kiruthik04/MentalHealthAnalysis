@@ -129,7 +129,7 @@ export default function SelfAssessment({
                     <div style={{ display: "flex", gap: 18 }}>
                         <div style={{ width: 320, height: 320 }}>
                             <ResponsiveContainer width="100%" height="100%">
-                                <RadarChart data={selfRadarData} cx="50%" cy="50%" outerRadius={110}>
+                                <RadarChart data={selfRadarData} cx="50%" cy="50%" outerRadius={80}>
                                     <PolarGrid />
                                     <PolarAngleAxis dataKey="subject" />
                                     <PolarRadiusAxis domain={[0, 100]} />
@@ -179,8 +179,8 @@ export default function SelfAssessment({
                     <div style={{ fontWeight: 900 }}>Symptom intensity (input)</div>
                     <div style={{ height: 260, marginTop: 12 }}>
                         <ResponsiveContainer width="100%" height="100%">
-                            <BarChart data={selfBarData} margin={{ top: 10, right: 20, left: -10, bottom: 80 }}>
-                                <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} angle={-45} textAnchor="end" height={70} />
+                            <BarChart data={selfBarData} margin={{ top: 10, right: 20, left: -10, bottom: 120 }}>
+                                <XAxis dataKey="name" tick={{ fontSize: 12 }} interval={0} angle={-45} textAnchor="end" height={90} />
                                 <YAxis allowDecimals={false} domain={[0, 5]} />
                                 <Tooltip formatter={(value) => [value, "Severity"]} />
                                 <Bar dataKey="value" fill={ACCENT} />
