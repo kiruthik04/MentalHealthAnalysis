@@ -76,7 +76,7 @@ export default function ClinicianPage() {
 
     return (
         <div>
-            <div className="header" style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+            <div style={{ marginBottom: 24, display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12, alignItems: "center" }}>
                 <div>
                     <div style={{ fontWeight: 900, fontSize: 18 }}>Clinician Dashboard</div>
                     <div className="small">Patient management & dataset insights</div>
@@ -84,10 +84,10 @@ export default function ClinicianPage() {
 
                 <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
                     <div style={{ width: 300 }}>
-                        <input placeholder="Search patients, notes, tags..." value={query} onChange={e => setQuery(e.target.value)} style={{ width: "100%", padding: "10px 12px", borderRadius: 10, background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.03)", color: "inherit", outline: "none", fontWeight: 700 }} />
+                        <input placeholder="Search patients..." value={query} onChange={e => setQuery(e.target.value)} style={{ width: "100%", padding: "10px 16px", borderRadius: 12, background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", color: "inherit", outline: "none", fontWeight: 500 }} />
                     </div>
                     <div style={{ display: "flex", gap: 8 }}>
-                        <button className="btn" onClick={handleAddPatient}><PlusCircle size={14} /> New Patient</button>
+                        <button className="btn-neon" onClick={handleAddPatient}><PlusCircle size={16} /> New Patient</button>
                     </div>
                 </div>
             </div>

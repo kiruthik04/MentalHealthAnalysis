@@ -43,15 +43,15 @@ export default function SelfAssessment({
         <>
             <div className="row">
                 {/* left: inputs (65%) */}
-                <motion.div className="card" initial="hidden" animate="visible" variants={cardVariants} style={{ minHeight: 720 }}>
+                <motion.div className="glass-panel" initial="hidden" animate="visible" variants={cardVariants} style={{ minHeight: 720 }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                         <div>
                             <div style={{ fontWeight: 900, fontSize: 18 }}>Symptom Input</div>
                             <div className="small" style={{ marginTop: 6 }}>Set severity for each symptom (0–5)</div>
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
-                            <button className="btn ghost" onClick={resetSelfInputs}><RefreshCcw size={14} /> Reset</button>
-                            <button className="btn ghost" onClick={() => downloadCSV([{ id: "self-input", name: "Self", age: "", sex: "", date: new Date().toISOString().slice(0, 10), symptoms: selfSymptoms, notes: "Self input export", tags: [] }])}><Download size={14} /> Export</button>
+                            <button className="btn-ghost" onClick={resetSelfInputs}><RefreshCcw size={14} /> Reset</button>
+                            <button className="btn-ghost" onClick={() => downloadCSV([{ id: "self-input", name: "Self", age: "", sex: "", date: new Date().toISOString().slice(0, 10), symptoms: selfSymptoms, notes: "Self input export", tags: [] }])}><Download size={14} /> Export</button>
                         </div>
                     </div>
 

@@ -45,13 +45,14 @@ export default function SelfPage() {
 
     return (
         <div>
-            <div className="header" style={{ marginBottom: 24 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
                 <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-                    <div style={{ fontWeight: 900, fontSize: 18 }}>Self-Assessment</div>
-                    <div className="small">Interactive symptom analyzer</div>
+                    <div style={{ background: "rgba(34, 211, 162, 0.1)", color: "var(--secondary)", padding: "6px 12px", borderRadius: 20, fontSize: 12, fontWeight: 700, border: "1px solid rgba(34, 211, 162, 0.2)" }}>
+                        INTERACTIVE ANALYZER
+                    </div>
                 </div>
                 <div>
-                    <button className="btn" onClick={analyzeSelf}><PlusCircle size={14} /> Analyze</button>
+                    <button className="btn-neon" onClick={analyzeSelf}><PlusCircle size={18} /> New Analysis</button>
                 </div>
             </div>
 
