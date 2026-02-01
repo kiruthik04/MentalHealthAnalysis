@@ -14,7 +14,19 @@ const SEED_DATA = {
         { id: "u_c1", email: "doctor@demo.com", password: "123", role: "clinician", name: "Dr. Sarah Chen" }
     ],
     patients: [
-        { id: "p1", user_id: "u_p1", clinician_id: "u_c1", name: "Alex Rivers", age: 29, sex: "Male", notes: "Anxiety symptoms worsening at night." }
+        {
+            id: "p1",
+            user_id: "u_p1",
+            clinician_id: "u_c1",
+            name: "Alex Rivers",
+            age: 29,
+            sex: "Male",
+            notes: "Anxiety symptoms worsening at night.",
+            medicalHistory: "Diagnosed with GAD in 2022. No known allergies.",
+            location: "San Francisco, CA",
+            occupation: "Software Engineer",
+            contact: "alex.rivers@example.com"
+        }
     ],
     assessments: []
 };

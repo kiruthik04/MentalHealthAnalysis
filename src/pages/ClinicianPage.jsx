@@ -31,7 +31,7 @@ export default function ClinicianPage() {
 
     useEffect(() => {
         if (selectedPatient) {
-            setEditorBuffer({ ...selectedPatient.symptoms });
+            setEditorBuffer({ ...selectedPatient, symptoms: { ...selectedPatient.symptoms } });
             setOverlayOpen(true);
             document.body.style.overflow = "hidden";
         } else {
@@ -64,13 +64,15 @@ export default function ClinicianPage() {
 
     function saveEdits() {
         if (!selectedId) return;
-        saveSymptomEdits(selectedId, editorBuffer);
+        updatePatient(selectedId, editorBuffer);
         setSelectedId(null);
     }
 
     function randomizeEditor() {
-        const out = {};
-        for (const s of SYMPTOM_DEFS) out[s.key] = Math.round(Math.random() * 5);
+        const out = { ...editorBuffer };
+        const newSymptoms = {};
+        for (const s of SYMPTOM_DEFS) newSymptoms[s.key] = Math.round(Math.random() * 5);
+        out.symptoms = newSymptoms;
         setEditorBuffer(out);
     }
 

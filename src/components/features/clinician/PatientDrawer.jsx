@@ -11,6 +11,7 @@ import {
 import { ArrowLeftCircle, Trash2, Tag, Save, RotateCcw } from "lucide-react";
 import { SYMPTOM_DEFS, ACCENT, COLORS, DANGER } from "../../../data/constants";
 import { predictConditions } from "../../../utils/analysis";
+import { User, MapPin, Briefcase, Phone, FileText } from "lucide-react";
 
 export default function PatientDrawer({
     overlayOpen,
@@ -111,7 +112,7 @@ export default function PatientDrawer({
                                 <div className="small" style={{ marginTop: 4 }}>Fine-tune symptoms</div>
 
                                 <div style={{ marginTop: 16, display: "flex", gap: 8, flexWrap: "wrap" }}>
-                                    <button className="btn-ghost" style={{ flex: 1, justifyContent: "center", fontSize: 13 }} onClick={() => setEditorBuffer({ ...selectedPatient.symptoms })}>
+                                    <button className="btn-ghost" style={{ flex: 1, justifyContent: "center", fontSize: 13 }} onClick={() => setEditorBuffer({ ...selectedPatient, symptoms: { ...selectedPatient.symptoms } })}>
                                         <RotateCcw size={14} /> Revert
                                     </button>
                                     <button className="btn-neon" style={{ flex: 1, justifyContent: "center", fontSize: 13, padding: "8px 12px" }} onClick={() => { saveEdits(); setSelectedId(null); }}>
@@ -121,7 +122,7 @@ export default function PatientDrawer({
 
                                 <div style={{ marginTop: 16, maxHeight: 400, overflowY: "auto", paddingRight: 6 }}>
                                     {SYMPTOM_DEFS.map(s => {
-                                        const val = editorBuffer[s.key] ?? selectedPatient.symptoms[s.key] ?? 0;
+                                        const val = editorBuffer.symptoms?.[s.key] ?? selectedPatient.symptoms[s.key] ?? 0;
                                         return (
                                             <div key={s.key} style={{ marginBottom: 16 }}>
                                                 <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
@@ -133,12 +134,86 @@ export default function PatientDrawer({
                                                     min="0"
                                                     max="5"
                                                     value={val}
-                                                    onChange={e => setEditorBuffer(prev => ({ ...prev, [s.key]: Number(e.target.value) }))}
+                                                    onChange={e => setEditorBuffer(prev => ({ ...prev, symptoms: { ...prev.symptoms, [s.key]: Number(e.target.value) } }))}
                                                     style={{ width: "100%", accentColor: "var(--primary)" }}
                                                 />
                                             </div>
                                         );
                                     })}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginTop: 18 }}>
+                            <div className="glass-panel" style={{ padding: 20 }}>
+                                <div style={{ fontWeight: 800, marginBottom: 12 }}>Patient Details</div>
+                                <div style={{ display: "grid", gap: 12 }}>
+                                    <div>
+                                        <label className="small" style={{ display: "block", marginBottom: 4 }}>Age</label>
+                                        <input
+                                            type="number"
+                                            value={editorBuffer.age || ""}
+                                            onChange={e => setEditorBuffer(prev => ({ ...prev, age: e.target.value }))}
+                                            style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", padding: 8, borderRadius: 8, color: "white" }}
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="small" style={{ display: "block", marginBottom: 4 }}>Location</label>
+                                        <div style={{ position: "relative" }}>
+                                            <MapPin size={14} style={{ position: "absolute", left: 10, top: 11, color: "var(--text-muted)" }} />
+                                            <input
+                                                value={editorBuffer.location || ""}
+                                                onChange={e => setEditorBuffer(prev => ({ ...prev, location: e.target.value }))}
+                                                style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", padding: "8px 8px 8px 32px", borderRadius: 8, color: "white" }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="small" style={{ display: "block", marginBottom: 4 }}>Occupation</label>
+                                        <div style={{ position: "relative" }}>
+                                            <Briefcase size={14} style={{ position: "absolute", left: 10, top: 11, color: "var(--text-muted)" }} />
+                                            <input
+                                                value={editorBuffer.occupation || ""}
+                                                onChange={e => setEditorBuffer(prev => ({ ...prev, occupation: e.target.value }))}
+                                                style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", padding: "8px 8px 8px 32px", borderRadius: 8, color: "white" }}
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="small" style={{ display: "block", marginBottom: 4 }}>Contact</label>
+                                        <div style={{ position: "relative" }}>
+                                            <Phone size={14} style={{ position: "absolute", left: 10, top: 11, color: "var(--text-muted)" }} />
+                                            <input
+                                                value={editorBuffer.contact || ""}
+                                                onChange={e => setEditorBuffer(prev => ({ ...prev, contact: e.target.value }))}
+                                                style={{ width: "100%", background: "rgba(255,255,255,0.05)", border: "1px solid var(--glass-border)", padding: "8px 8px 8px 32px", borderRadius: 8, color: "white" }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="glass-panel" style={{ padding: 20 }}>
+                                <div style={{ fontWeight: 800, marginBottom: 12 }}>Medical History</div>
+                                <div style={{ height: "100%", display: "flex", flexDirection: "column" }}>
+                                    <textarea
+                                        value={editorBuffer.medicalHistory || ""}
+                                        onChange={e => setEditorBuffer(prev => ({ ...prev, medicalHistory: e.target.value }))}
+                                        placeholder="Enter patient medical history, allergies, and past treatments..."
+                                        style={{
+                                            flex: 1,
+                                            width: "100%",
+                                            background: "rgba(255,255,255,0.05)",
+                                            border: "1px solid var(--glass-border)",
+                                            padding: 12,
+                                            borderRadius: 8,
+                                            color: "white",
+                                            resize: "none",
+                                            minHeight: 180,
+                                            lineHeight: 1.5,
+                                            fontFamily: "inherit"
+                                        }}
+                                    />
                                 </div>
                             </div>
                         </div>

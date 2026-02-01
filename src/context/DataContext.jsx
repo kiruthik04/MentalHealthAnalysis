@@ -65,6 +65,10 @@ export function DataProvider({ children }) {
             symptoms: randomSymptomSet(),
             notes: "",
             tags: [],
+            medicalHistory: "",
+            location: "Unknown",
+            occupation: "Unemployed",
+            contact: ""
         };
         // Optimistic update
         setPatients(prev => [p, ...prev]);
