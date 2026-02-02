@@ -25,7 +25,12 @@ export default function SelfAssessment({
     selfResults,
     setSelfResults,
     selfAnalyzedAt,
-    setSelfAnalyzedAt
+    setSelfAnalyzedAt,
+    age,
+    setAge,
+    sex,
+    setSex,
+    onAnalyze
 }) {
     const cardVariants = {
         hidden: { opacity: 0, y: 8 },
@@ -50,12 +55,43 @@ export default function SelfAssessment({
                             <div className="small" style={{ marginTop: 6 }}>Set severity for each symptom (0–5)</div>
                         </div>
                         <div style={{ display: "flex", gap: 8 }}>
+                            <button className="btn-neon" onClick={onAnalyze} style={{ padding: "8px 16px", fontSize: 13 }}>Analyze</button>
                             <button className="btn-ghost" onClick={resetSelfInputs}><RefreshCcw size={14} /> Reset</button>
                             <button className="btn-ghost" onClick={() => downloadCSV([{ id: "self-input", name: "Self", age: "", sex: "", date: new Date().toISOString().slice(0, 10), symptoms: selfSymptoms, notes: "Self input export", tags: [] }])}><Download size={14} /> Export</button>
                         </div>
                     </div>
 
                     <div style={{ height: 14 }} />
+
+                    {/* demographics */}
+                    <div style={{ background: "rgba(255,255,255,0.03)", padding: 12, borderRadius: 8, marginBottom: 16 }}>
+                        <div style={{ fontWeight: 800, marginBottom: 8 }}>Demographics</div>
+                        <div style={{ display: "flex", gap: 16 }}>
+                            <div style={{ flex: 1 }}>
+                                <label className="small" style={{ marginBottom: 4, display: "block" }}>Age</label>
+                                <input
+                                    type="number"
+                                    className="input"
+                                    style={{ width: "100%" }}
+                                    value={age}
+                                    onChange={e => setAge(e.target.value)}
+                                    placeholder="25"
+                                />
+                            </div>
+                            <div style={{ flex: 1 }}>
+                                <label className="small" style={{ marginBottom: 4, display: "block" }}>Sex</label>
+                                <select
+                                    className="input"
+                                    style={{ width: "100%" }}
+                                    value={sex}
+                                    onChange={e => setSex(e.target.value)}
+                                >
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     {/* grouped sections */}
                     <div className="group">
@@ -108,6 +144,13 @@ export default function SelfAssessment({
                                 </div>
                             </div>
                         ))}
+                    </div>
+
+                    {/* Analyze CTA for mobile/flow */}
+                    <div style={{ marginTop: 24, textAlign: "center" }}>
+                        <button className="btn-neon" onClick={onAnalyze} style={{ width: "100%", justifyContent: "center", padding: 16 }}>
+                            Run Analysis
+                        </button>
                     </div>
                 </motion.div>
 
