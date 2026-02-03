@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import SelfAssessment from "../components/features/self/SelfAssessment";
 import { SYMPTOM_DEFS } from "../data/constants";
 import { predictConditions } from "../utils/analysis";
+import { db } from "../services/db"; // Import db
+import { useAuth } from "../context/AuthContext"; // Import useAuth
 import { PlusCircle } from "lucide-react";
 
 export default function SelfPage() {
+    const { user } = useAuth(); // Get current user
     const [selfSymptoms, setSelfSymptoms] = useState(() => {
         const obj = {};
         for (const s of SYMPTOM_DEFS) obj[s.key] = 0;
@@ -55,6 +58,21 @@ export default function SelfPage() {
 
             setSelfResults({ preds, topSymptoms, recommendations });
             setSelfAnalyzedAt(new Date().toISOString());
+
+            // SAVING TO DB
+            if (user && user.id) {
+                // First get patient profile ID (assuming user.id maps to a patient, or use user.id directly if that's the schema)
+                // In db.js seed data: user.id="u_p1", patient.id="p1".
+                // We need to find the patient record for this user to get the correct patient_id for 'assessments' table.
+                const profile = await db.getPatientProfile(user.id);
+                if (profile) {
+                    await db.saveAssessment(profile.id, selfSymptoms, preds);
+                    console.log("Assessment saved for patient:", profile.id);
+                } else {
+                    console.warn("Patient profile not found for user:", user.id);
+                }
+            }
+
         } catch (err) {
             console.error(err);
             setAnalyzingError("Failed to run analysis. Model might not be loaded.");

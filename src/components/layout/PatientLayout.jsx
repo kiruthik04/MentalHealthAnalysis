@@ -11,9 +11,9 @@ export default function PatientLayout() {
     const { user } = useAuth();
 
     const getPageTitle = (pathname) => {
-        if (pathname.includes("/assessment")) return "Self Assessment";
+        if (pathname.includes("/history")) return "Assessment History";
         if (pathname.includes("/settings")) return "Settings";
-        return "My Wellbeing";
+        return "Self Analysis";
     };
 
     return (

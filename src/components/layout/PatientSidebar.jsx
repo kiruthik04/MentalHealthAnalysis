@@ -2,6 +2,7 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import {
     Activity,
+    ClipboardCheck,
     Settings,
     Sparkles,
     LogOut,
@@ -36,17 +37,17 @@ export default function PatientSidebar({ isOpen, onClose }) {
                         className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
                         onClick={onClose}
                     >
-                        <Home size={20} className="nav-icon" />
-                        <span>Overview</span>
+                        <Activity size={20} className="nav-icon" />
+                        <span>Self Assessment</span>
                     </NavLink>
 
                     <NavLink
-                        to="/p/assessment"
+                        to="/p/history"
                         className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
                         onClick={onClose}
                     >
-                        <Activity size={20} className="nav-icon" />
-                        <span>Self Assessment</span>
+                        <ClipboardCheck size={20} className="nav-icon" />
+                        <span>History</span>
                     </NavLink>
 
                     <NavLink

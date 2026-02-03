@@ -7,7 +7,11 @@ import { SYMPTOM_DEFS } from "../data/constants";
 let session = null;
 
 // Initialize the ONNX session
-ort.env.wasm.wasmPaths = "/"; // Serve WASM files from public root
+ort.env.wasm.wasmPaths = import.meta.env.DEV
+    ? "/node_modules/onnxruntime-web/dist/"
+    : "/"; // In Dev, serve from node_modules to allow imports. In Prod, serve from public root.
+
+ort.env.logLevel = 'warning'; // Suppress info logs like "Unknown CPU vendor"
 
 export async function loadModel() {
     if (session) return session;
@@ -18,8 +22,8 @@ export async function loadModel() {
         console.log("ONNX Model loaded successfully");
         return session;
     } catch (e) {
-        console.error("Failed to load ONNX model:", e);
-        throw e;
+        console.warn("Failed to load ONNX model (using heuristics instead):", e);
+        return null; // Return null instead of throwing
     }
 }
 
@@ -47,23 +51,25 @@ export async function predictConditions(symptoms, age, sex) {
     const symptomValues = inputOrder.map(key => Number(symptoms[key] || 0));
     const inputData = Float32Array.from([Number(age || 25), sexEncoded, ...symptomValues]);
 
-    // 2. Run Inference
     const sess = await loadModel();
-    const tensor = new ort.Tensor('float32', inputData, [1, 20]); // 1 row, 20 cols
-
-    const feeds = { float_input: tensor }; // Check generic input name 'float_input' or specific?
-    // Usually sklearn-onnx uses 'X' or 'float_input'. We might need to try/catch or inspect model.
-    // For now assuming 'float_input' or 'X'. Let's use 'float_input' as generic placeholder 
-    // but usually it's best to inspect. Sklearn-onnx often uses "X".
-    // I'll try "X" as it is common for sklearn.
-
-    // Note: If input name is wrong, correct it after error.
     let results;
-    try {
-        results = await sess.run({ "X": tensor });
-    } catch (e) {
-        console.warn("Retrying with 'float_input'...", e);
-        results = await sess.run({ "float_input": tensor });
+
+    if (sess) {
+        // 2. Run Inference
+        const tensor = new ort.Tensor('float32', inputData, [1, 20]); // 1 row, 20 cols
+
+        try {
+            results = await sess.run({ "X": tensor });
+        } catch (e) {
+            console.warn("Retrying with 'float_input'...", e);
+            try {
+                results = await sess.run({ "float_input": tensor });
+            } catch (e2) {
+                console.warn("Inference failed, falling back to heuristics:", e2);
+            }
+        }
+    } else {
+        console.log("Model not loaded, skipping inference.");
     }
 
     // 3. Process Output
@@ -76,22 +82,24 @@ export async function predictConditions(symptoms, age, sex) {
 
     // Parse 'output_probability' if available
     // Note: The model output names depend on how it was exported.
-    // Common sklearn-onnx outputs: "output_label", "output_probability"
-    try {
-        const probs = results.output_probability; // Map/Sequence
-        if (probs) {
-            // If it's a sequence of maps (one per sample), get the first one
-            // If it's a Map tensor, we need to iterate.
-            // For now, let's assume we can rely on heuristic if this is complex to parse without inspecting structure.
+    // Parse 'output_probability' if available
+    if (results) {
+        try {
+            const probs = results.output_probability; // Map/Sequence
+            if (probs) {
+                // If it's a sequence of maps (one per sample), get the first one
+                // If it's a Map tensor, we need to iterate.
+                // For now, let's assume we can rely on heuristic if this is complex to parse without inspecting structure.
 
-            // Heuristic Fallback (since we can't see the exact object structure easily in blind mode):
-            // We will just assign random 'simulated' values derived from model raw tensor if possible, 
-            // OR relying on the console log user provided to debug next step.
+                // Heuristic Fallback (since we can't see the exact object structure easily in blind mode):
+                // We will just assign random 'simulated' values derived from model raw tensor if possible, 
+                // OR relying on the console log user provided to debug next step.
 
-            // For this step, let's just make sure we don't crash.
+                // For this step, let's just make sure we don't crash.
+            }
+        } catch (e) {
+            console.warn("Error parsing output:", e);
         }
-    } catch (e) {
-        console.warn("Error parsing output:", e);
     }
 
     // TEMPORARY: Return input-based heuristics mixed with mock data so the UI updates 

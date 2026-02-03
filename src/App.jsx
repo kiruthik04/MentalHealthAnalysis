@@ -10,6 +10,7 @@ import PatientLayout from "./components/layout/PatientLayout";
 import ClinicianLayout from "./components/layout/ClinicianLayout";
 
 import SelfPage from "./pages/SelfPage";
+import HistoryPage from "./pages/HistoryPage";
 import ClinicianPage from "./pages/ClinicianPage";
 import SettingsPage from "./pages/SettingsPage";
 
@@ -31,7 +32,7 @@ export default function App() {
                             </RequireAuth>
                         }>
                             <Route index element={<SelfPage />} />
-                            <Route path="assessment" element={<SelfPage />} />
+                            <Route path="history" element={<HistoryPage />} />
                             <Route path="settings" element={<SettingsPage />} />
                         </Route>
 

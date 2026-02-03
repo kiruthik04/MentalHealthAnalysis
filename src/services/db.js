@@ -100,6 +100,12 @@ class TiDBService {
         return store.patients;
     }
 
+    async getPatientAssessments(patientId) {
+        await this.delay();
+        const store = this._getStore();
+        return store.assessments.filter(a => a.patient_id === patientId).sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+    }
+
     async getAllAssessments() {
         await this.delay();
         const store = this._getStore();
