@@ -28,7 +28,7 @@ export default function PatientDrawer({
     const drawerRadarData = useMemo(() => {
         if (!selectedPatient) return [];
         const preds = predictConditions(selectedPatient.symptoms);
-        return Object.keys(preds).map(k => ({ subject: k, A: preds[k], fullMark: 100 }));
+        return Object.keys(preds).map(k => ({ subject: k, A: preds[k] * 100, fullMark: 100 }));
     }, [selectedPatient]);
 
     return (
@@ -101,7 +101,7 @@ export default function PatientDrawer({
                                                 <div style={{ width: 8, height: 8, background: COLORS[idx % COLORS.length], borderRadius: "50%" }} />
                                                 <div style={{ fontWeight: 600, fontSize: 13 }}>{k}</div>
                                             </div>
-                                            <div style={{ fontWeight: 800, color: "white" }}>{v}%</div>
+                                            <div style={{ fontWeight: 800, color: "white" }}>{Math.round(v * 100)}%</div>
                                         </div>
                                     ))}
                                 </div>

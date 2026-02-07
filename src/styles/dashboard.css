@@ -295,3 +295,138 @@ body {
   backdrop-filter: blur(4px);
   z-index: 90;
 }
+
+/* GRID SYSTEM FOR SYMPTOMS */
+.symptom-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 16px;
+}
+
+@media (max-width: 768px) {
+  .symptom-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Improve touch targets on mobile */
+  .range {
+    height: 24px;
+  }
+}
+
+/* CUSTOM RANGE SLIDER */
+.range {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+  cursor: pointer;
+}
+
+.range:focus {
+  outline: none;
+}
+
+.range::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+}
+
+.range::-webkit-slider-thumb {
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background: var(--primary);
+  border: 2px solid white;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
+  -webkit-appearance: none;
+  margin-top: -6px;
+  /* center thumb */
+  transition: transform 0.1s;
+}
+
+.range::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* INPUT FIELDS */
+.input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* SYMPTOM CARD */
+.symptom-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  transition: background 0.2s;
+}
+
+.symptom-card:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+/* FLIP CARD STYLES */
+.flip-container {
+  perspective: 1000px;
+  height: 140px;
+  /* Fixed height for consistency */
+  cursor: pointer;
+}
+
+.flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.flip-container.flipped .flip-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-front,
+.flip-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.flip-back {
+  transform: rotateY(180deg);
+  background: rgba(30, 41, 59, 0.9);
+  /* Darker background for back */
+  border-color: var(--primary);
+  overflow-y: auto;
+  justify-content: flex-start;
+}
+
+/* Hide scrollbar on flip back but allow scroll */
+.flip-back::-webkit-scrollbar {
+  width: 4px;
+}

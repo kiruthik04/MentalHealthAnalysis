@@ -87,6 +87,7 @@ class TiDBService {
             created_at: new Date().toISOString()
         };
         store.assessments.push(record);
+        console.log("DB: Saving assessment. Total count:", store.assessments.length);
         this._saveStore(store);
         return { success: true, id: record.id };
     }

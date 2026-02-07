@@ -61,16 +61,22 @@ export default function SelfPage() {
 
             // SAVING TO DB
             if (user && user.id) {
+                console.log("Attempting to save assessment for user:", user.id);
                 // First get patient profile ID (assuming user.id maps to a patient, or use user.id directly if that's the schema)
                 // In db.js seed data: user.id="u_p1", patient.id="p1".
                 // We need to find the patient record for this user to get the correct patient_id for 'assessments' table.
                 const profile = await db.getPatientProfile(user.id);
                 if (profile) {
-                    await db.saveAssessment(profile.id, selfSymptoms, preds);
-                    console.log("Assessment saved for patient:", profile.id);
+                    console.log("Found patient profile:", profile.id);
+                    const result = await db.saveAssessment(profile.id, selfSymptoms, preds);
+                    console.log("Assessment saved result:", result);
+                    alert("Assessment saved to history!"); // Temporary feedback
                 } else {
                     console.warn("Patient profile not found for user:", user.id);
+                    alert("Error: Could not find patient profile to save results.");
                 }
+            } else {
+                console.warn("No user logged in, cannot save results.");
             }
 
         } catch (err) {
