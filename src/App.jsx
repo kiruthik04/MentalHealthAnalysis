@@ -13,6 +13,7 @@ import SelfPage from "./pages/SelfPage";
 import HistoryPage from "./pages/HistoryPage";
 import ClinicianPage from "./pages/ClinicianPage";
 import SettingsPage from "./pages/SettingsPage";
+import ProfilePage from "./pages/ProfilePage";
 
 import "./styles/dashboard.css";
 
@@ -32,6 +33,7 @@ export default function App() {
                             </RequireAuth>
                         }>
                             <Route index element={<SelfPage />} />
+                            <Route path="profile" element={<ProfilePage />} />
                             <Route path="history" element={<HistoryPage />} />
                             <Route path="settings" element={<SettingsPage />} />
                         </Route>

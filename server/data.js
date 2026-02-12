@@ -30,7 +30,32 @@ function randomSymptomSet() {
 }
 
 // Create a demo dataset (in-memory)
+const USERS = [
+    { id: "u_p1", email: "patient@demo.com", password: "123", role: "patient", name: "Alex Rivers", preferences: { darkMode: true, dataPersistence: true, animationSpeed: "Normal" } },
+    { id: "u_c1", email: "doctor@demo.com", password: "123", role: "clinician", name: "Dr. Sarah Chen", preferences: { darkMode: true, dataPersistence: true, animationSpeed: "Normal" } }
+];
+
 const DEMO_PATIENTS = new Array(48).fill(0).map((_, i) => {
+    // Determine if this is the linked patient for our seed user
+    if (i === 0) {
+        return {
+            id: "p1",
+            user_id: "u_p1",
+            clinician_id: "u_c1",
+            name: "Alex Rivers",
+            age: 29,
+            sex: "Male",
+            date: new Date().toISOString().slice(0, 10),
+            symptoms: randomSymptomSet(),
+            notes: "Anxiety symptoms worsening at night.",
+            medicalHistory: "Diagnosed with GAD in 2022. No known allergies.",
+            location: "San Francisco, CA",
+            occupation: "Software Engineer",
+            contact: "alex.rivers@example.com",
+            tags: ['urgent']
+        };
+    }
+
     const age = 16 + Math.floor(Math.random() * 60);
     const tags = Math.random() > 0.82 ? ['urgent'] : Math.random() > 0.76 ? ['follow-up'] : [];
     return {
@@ -141,6 +166,24 @@ function deletePatient(id) {
     return store.patients.length !== before;
 }
 
+
+function findUser(email, pwd) {
+    return USERS.find(u => u.email === email && u.password === pwd);
+}
+
+function getUser(id) {
+    return USERS.find(u => u.id === id);
+}
+
+function updateUser(id, patch) {
+    const u = USERS.find(u => u.id === id);
+    if (u) {
+        Object.assign(u, patch);
+        return u;
+    }
+    return null;
+}
+
 export {
     SYMPTOM_DEFS,
     randomSymptomSet,
@@ -153,4 +196,7 @@ export {
     createPatient,
     updatePatient,
     deletePatient,
+    findUser,
+    getUser,
+    updateUser
 };

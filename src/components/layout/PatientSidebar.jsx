@@ -6,7 +6,8 @@ import {
     Settings,
     Sparkles,
     LogOut,
-    Home
+    Home,
+    User
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 
@@ -39,6 +40,15 @@ export default function PatientSidebar({ isOpen, onClose }) {
                     >
                         <Activity size={20} className="nav-icon" />
                         <span>Self Assessment</span>
+                    </NavLink>
+
+                    <NavLink
+                        to="/p/profile"
+                        className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
+                        onClick={onClose}
+                    >
+                        <User size={20} className="nav-icon" />
+                        <span>Profile</span>
                     </NavLink>
 
                     <NavLink
