@@ -1,0 +1,15 @@
+{
+    "name": "mental-health-dashboard-server",
+    "private": true,
+    "version": "0.0.0",
+    "type": "module",
+    "scripts": {
+        "start": "node server.js",
+        "verify": "node scripts/verify-backend.js"
+    },
+    "dependencies": {
+        "body-parser": "^2.2.0",
+        "cors": "^2.8.5",
+        "express": "^5.1.0"
+    }
+}
